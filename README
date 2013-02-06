@@ -1,15 +1,8 @@
-Lua Syntax Coloring
+R Syntax Coloring
 ===================
 
-XCode plugins and Syntax Coloring is not documented, unfortunately 
-syntax coloring must be manually selected from the Editor :/
-
-Authors:
-
-* Tiago Bastos
+Attempt at R syntax support for Xcode 4
 
 Based on the work of:
-
+* Tiago Bastos (lua-xcode-coloring)
 * Alex Karahalios (Install Script)
-* Bret Victor (Syntax file)
-* Graham Henstridge (Syntax file)
