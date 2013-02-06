@@ -1,15 +1,15 @@
 /* 
- * Lua.xcspec: Xcode file type for Lua
- * 
+ * R.xcspec: Xcode file type for R
+ * (unused for Xcode 4.x?)
  */
 
 (
 	{
 		Type = FileType;
-		Identifier = sourcecode.lua;
+		Identifier = sourcecode.r;
 		BasedOn = sourcecode;
-		Name = "Lua file";
-		Extensions = ( lua );
-		Language = "xcode.lang.lua";
+		Name = "R file";
+		Extensions = ( r R );
+		Language = "xcode.lang.r";
 	}
 )
