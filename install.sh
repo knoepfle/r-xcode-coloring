@@ -1,10 +1,7 @@
 #!/bin/bash
 
-#  Created by Tiago Bastos.
-#  Last edited 6/18/2012
-#  Copyright 2012 Tiago Bastos. All rights reserved.
-#
-# Updates Xcode and to support Lua language for editing
+# Based on code created by Tiago Bastos.
+# Patches Xcode 4.x to support R language for editing
 #
 
 set -e
@@ -16,7 +13,7 @@ if [ "$XCODE_MAJOR_VERSION" -lt "4" ]; then
         exit 1
 fi
 
-# Path were this script is located
+# Path where this script is located
 SCRIPT_PATH="$(dirname "$BASH_SOURCE")"
 
 # Set up path for PlistBuddy helper application which can add elements to Plist files
@@ -36,27 +33,27 @@ cat >AdditionalLanguages.plist <<EOF
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Xcode.SourceCodeLanguage.Lua</key>
+	<key>Xcode.SourceCodeLanguage.R</key>
 	<dict>
 		<key>languageSpecification</key>
-		<string>xcode.lang.lua</string>
+		<string>xcode.lang.r</string>
 		<key>fileDataType</key>
 		<array>
 			<dict>
 				<key>identifier</key>
-				<string>com.apple.xcode.lua-source</string>
+				<string>com.apple.xcode.r-source</string>
 			</dict>
 		</array>
 		<key>id</key>
-		<string>Xcode.SourceCodeLanguage.Lua</string>
+		<string>Xcode.SourceCodeLanguage.R</string>
 		<key>point</key>
 		<string>Xcode.SourceCodeLanguage</string>
 		<key>languageName</key>
-		<string>Lua</string>
+		<string>R</string>
 		<key>version</key>
 		<string>1.0</string>
 		<key>documentationAbbreviation</key>
-		<string>lua</string>				
+		<string>r</string>				
 		<key>conformsTo</key>
 		<array>
 			<dict>
@@ -65,7 +62,7 @@ cat >AdditionalLanguages.plist <<EOF
 			</dict>
 		</array>
 		<key>name</key>
-		<string>Lua Language</string>
+		<string>R Language</string>
 	</dict>
 </dict>
 </plist>
@@ -81,7 +78,7 @@ $PLISTBUDDY "$DVTFOUNDATION_PATH/DVTFoundation.xcplugindata"  -c 'Merge Addition
 rm -f AdditionalLanguages.plist
 
 # Copy in the xclangspecs for the languages (assumes in same directory as this shell script)
-cp "$SCRIPT_PATH/Lua.xclangspec" "$DVTFOUNDATION_PATH"
+cp "$SCRIPT_PATH/R.xclangspec" "$DVTFOUNDATION_PATH"
 
 # Remove any cached Xcode plugins
 rm -rf /private/var/folders/*/*/*/com.apple.DeveloperTools/*/Xcode/PlugInCache.xcplugincache
