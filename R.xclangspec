@@ -8,7 +8,7 @@
     Identifier = "xcode.lang.r.identifier";
     Syntax = {
         StartChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-        Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.";
+        Chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.";
         Words = (
             "if",
             "else",
@@ -21,6 +21,7 @@
             "break",
             "ifelse",
             "switch",
+            "return",
         );
         Type = "xcode.syntax.keyword";        // Words specifies keywords
         AltType = "xcode.syntax.identifier";  // non-keywords are identifiers
@@ -28,50 +29,147 @@
 },
 
 {
-    Identifier = "xcode.lang.r.interestingOperators";
+    Identifier = "xcode.lang.r.constant";
     Syntax = {
         Words = (
-            ";",
-            ":",
-            "&",
-            "|",
-            "<",
-            ">",
-            "!",
-            "=",
-            "/",
-            "%",
-            "+",
-            "-",
-            "~",
-            "*",
-            ",",
+            "NULL",
+            "NA",
+            "TRUE",
+            "FALSE",
+            "T",
+            "F",
+        );
+        Type = "xcode.syntax.identifier.constant";
+    };
+},
+
+{
+    Identifier = "xcode.lang.r.assignment";
+    Syntax = {
+        Words = (
+            "<-",
         );
         Type = "xcode.syntax.plain";
     };
 },
+
 
 /****************************************************************************/
 
+
 {
-    Identifier = "xcode.lang.r";
-    Description = "R Coloring";
-    BasedOn = "xcode.lang.simpleColoring";
-    IncludeInMenu = YES;
-    Name = "R";
-    Syntax = {
-        IncludeRules = (
+        Identifier = "xcode.lang.r";
+        Description = "R Coloring";
+        BasedOn = "xcode.lang.simpleColoring";
+        IncludeInMenu = YES;
+        Name = "R";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            IncludeRules = (
+                "xcode.lang.r.function",
+                "xcode.lang.r.block",
+                "xcode.lang.r.bracketexpr",
+                "xcode.lang.r.parenexpr",
+            );
+            Type = "xcode.syntax.plain";
+        };
+    },
+
+    {
+        Identifier = "xcode.lang.r.lexer";
+        Syntax = {
+            IncludeRules = (
             "xcode.lang.comment.singleline.pound",
             "xcode.lang.string",
-            "xcode.lang.string.singlequote",
             "xcode.lang.string.backquote",
             "xcode.lang.character",
-            "xcode.lang.number",
+            "xcode.lang.r.constant",
             "xcode.lang.r.identifier",
-            "xcode.lang.r.interestingOperators"
-        );
-        Type = "xcode.syntax.plain";
-    };
-},
+            "xcode.lang.r.assignment",
+            "xcode.lang.number",
+            );
+        };
+    },
+
+/****************************************************************************/
+// MARK: Functions
+/****************************************************************************/
+
+    {
+        Identifier = "xcode.lang.r.function";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Rules = (
+                "xcode.lang.r.function.declarator",
+                "xcode.lang.r.block",
+            );
+            Type = "xcode.syntax.definition.function";
+        };
+    },
+    
+     {
+        Identifier = "xcode.lang.r.function.declarator";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Rules = (
+                "xcode.lang.r.function.name",
+                "<-|=",
+                "function",
+                "xcode.lang.r.parenexpr",
+            );
+        };
+    },
+
+    {
+        Identifier = "xcode.lang.r.function.name";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Rules = (
+                "xcode.lang.r.identifier|xcode.lang.string.backquote"
+            );
+            Type = "xcode.syntax.name.partial";
+        };
+    },
+    
+    {
+        Identifier = "xcode.lang.r.block";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Start = "{";
+            End = "}";
+            Foldable = YES;
+            Recursive = YES;
+            IncludeRules = (
+                "xcode.lang.r.function",
+                "xcode.lang.r.bracketexpr",
+                "xcode.lang.r.parenexpr",
+            );
+        };
+    },
+
+    {
+        Identifier = "xcode.lang.r.parenexpr";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Start = "(";
+            End = ")";
+            Recursive = YES;
+            IncludeRules = (
+                "xcode.lang.r.bracketexpr",
+            );
+        };
+    },
+    {
+        Identifier = "xcode.lang.r.bracketexpr";
+        Syntax = {
+            Tokenizer = "xcode.lang.r.lexer";
+            Start = "[";
+            End = "]";
+            Recursive = YES;
+            IncludeRules = (
+                "xcode.lang.r.parenexpr",
+            );
+        };
+    },
 
 )
